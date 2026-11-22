@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz Dora en famille · prototype étudiant (collaboration fictive)</title>
+<meta name="description" content="Prototype étudiant ECV Nantes : landing quiz d'une collaboration fictive Decathlon × Dora. Aucune donnée n'est envoyée.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#3643BA">
+<style>
+@font-face{font-family:"Baloo 2";font-weight:800;font-style:normal;font-display:swap;src:url(fonts/baloo-2-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:Figtree;font-weight:400;font-style:normal;font-display:swap;src:url(fonts/figtree-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Figtree;font-weight:500;font-style:normal;font-display:swap;src:url(fonts/figtree-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Figtree;font-weight:600;font-style:normal;font-display:swap;src:url(fonts/figtree-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:Figtree;font-weight:700;font-style:normal;font-display:swap;src:url(fonts/figtree-latin-700-normal.woff2) format("woff2")}
+:root{
+  --blue:#3643BA; --rose:#ED2B91; --rose-txt:#C8156F; --yellow:#F6C928; --pale:#FFF3C4;
+  --ink:#292038; --cream:#FFFCFA; --grey:#6B6676; --line:#E4E0E8; --soft:#F1F0F4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Figtree,system-ui,sans-serif;color:var(--ink);background:#E9E7EE;line-height:1.45}
+.app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--cream);display:flex;flex-direction:column;position:relative;box-shadow:0 0 40px rgba(41,32,56,.08)}
+h1,h2,.big{font-family:"Baloo 2",system-ui,sans-serif;font-weight:800;line-height:1.05}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+
+/* bandeau projet étudiant */
+.demo{background:var(--ink);color:#fff;font-size:12.5px;font-weight:600;text-align:center;padding:7px 12px;line-height:1.35}
+.demo b{color:var(--yellow)}
+
+/* en-tête (évocation) */
+.top{background:#fff;padding:10px 16px 12px;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;color:var(--blue);letter-spacing:.5px}
+.brand span.menu{font-size:22px;color:var(--ink);font-weight:400}
+.icons{display:flex;gap:18px}
+.icons svg{width:22px;height:22px}
+.search{margin-top:10px;background:var(--soft);border-radius:20px;padding:9px 14px;font-size:14px;color:var(--grey)}
+
+/* écrans */
+.screen{display:none;flex:1;flex-direction:column}
+.screen.on{display:flex}
+.pad{padding:24px 20px}
+.btn{display:block;width:100%;border-radius:28px;padding:16px 20px;font-weight:700;font-size:17px;text-align:center}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-b{background:var(--blue);color:#fff}
+.link{color:var(--blue);font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:3px}
+
+/* landing */
+.crumb{font-size:12px;color:var(--grey);padding:10px 16px;background:#fff}
+.hero{background:var(--blue);color:#fff;position:relative;overflow:hidden;padding:150px 20px 28px}
+.hero .leaves{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;pointer-events:none}
+.scan{position:relative;display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.14);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600}
+.scan img{width:30px;height:auto;border-radius:3px}
+.pills{display:flex;gap:8px;margin:16px 0 12px}
+.pill{background:var(--rose-txt);color:#fff;font-size:13px;font-weight:700;border-radius:14px;padding:5px 12px}
+.pill.alt{background:rgba(255,255,255,.18)}
+.hero h1{font-size:36px}
+.hero p{margin-top:12px;font-size:17px}
+.hero .illu{display:block;width:84%;max-width:340px;margin:18px auto 22px}
+.how h2,.rules h2{font-size:26px;color:var(--blue);margin-bottom:16px}
+.step{display:flex;gap:14px;margin-bottom:16px}
+.num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--rose-txt);color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center;margin-top:1px}
+.step strong{display:block;font-size:17px}
+.step span{font-size:15px;color:var(--grey)}
+.prize{background:var(--pale);border-radius:20px;padding:22px 20px;margin:4px 20px 8px}
+.prize small{display:block;color:var(--rose-txt);font-weight:700;font-size:13px;letter-spacing:.06em}
+.prize h2{font-size:26px;margin:6px 0 8px}
+.prize p{font-size:15px}
+.prize .more{background:#fff;border-radius:12px;padding:10px 14px;margin-top:12px;font-size:14px;font-weight:700}
+.rules h2{font-size:22px}
+.rules li{list-style:none;font-size:15px;margin-bottom:8px;padding-left:16px;position:relative}
+.rules li::before{content:"•";position:absolute;left:0}
+details{margin-top:6px}
+details summary{list-style:none;cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+details .full{margin-top:12px;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+details .full p+p{margin-top:8px}
+.foot{background:var(--ink);color:#D9D6E0;font-size:12px;text-align:center;padding:16px}
+
+/* quiz */
+.qnav{padding:16px 20px 0}
+.qnav .row{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600}
+.back{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:20px}
+.prog{display:flex;gap:6px;margin-top:14px}
+.prog i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.prog i.done{background:var(--rose)}
+.q h1{font-size:28px;margin:22px 0 18px}
+.answers{display:flex;flex-direction:column;gap:12px}
+.ans{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px;font-size:17px;font-weight:600}
+.ans::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #B9B4C4}
+.ans:hover{border-color:var(--blue)}
+.ans.picked{border-color:var(--blue)}
+.ans.picked::before{border:7px solid var(--blue)}
+.hint{margin-top:auto;padding-top:24px;text-align:center;font-size:13px;color:var(--grey)}
+
+/* réponse */
+.reveal{background:var(--blue);color:#fff}
+.reveal .qnav .row{color:#fff}
+.reveal .back{background:#fff;color:var(--ink);border:0}
+.reveal .prog i{background:rgba(255,255,255,.35)}
+.reveal .prog i.done{background:var(--rose)}
+.reveal .body{text-align:center;padding:10px 24px 24px;display:flex;flex-direction:column;flex:1}
+.reveal .illu{width:78%;max-width:320px;margin:6px auto 10px}
+.reveal .pre{font-size:18px;font-weight:600}
+.reveal .big{font-size:44px;color:var(--yellow);margin:12px 0}
+.reveal .why{font-size:16px}
+.reveal .btn{margin-top:auto}
+
+/* formulaire */
+.form h1{font-size:28px;margin:20px 0 6px}
+.req{font-size:13px;color:var(--grey);margin-bottom:18px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+.field input{width:100%;font:inherit;font-size:16px;padding:14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.field input::placeholder{color:#77727F}
+.field input:focus{border-color:var(--blue);outline:none}
+.err{display:none;color:#B3123F;font-size:13px;font-weight:600;margin-top:6px}
+.invalid input{border-color:#B3123F}
+.invalid .err{display:block}
+.check{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;font-size:14px}
+.check input{width:22px;height:22px;flex:none;accent-color:var(--blue);margin-top:1px}
+.check.invalid span{color:#B3123F}
+.form .btn{margin-top:18px}
+.small{font-size:12.5px;color:var(--grey);text-align:center;margin-top:12px}
+
+/* confirmation */
+.done{background:var(--blue);color:#fff;position:relative;overflow:hidden}
+.done .leaves{position:absolute;top:0;left:0;width:100%;pointer-events:none}
+.done .body{padding:175px 24px 24px;display:flex;flex-direction:column;flex:1;position:relative}
+.done h1{font-size:48px}
+.done p{margin-top:14px;font-size:17px}
+.done .illu{width:80%;max-width:320px;margin:20px auto}
+.done .btn{margin-top:auto;font-size:16px}
+.done .again{display:block;text-align:center;margin-top:16px;color:#fff;font-weight:600;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.toast{margin-top:10px;text-align:center;font-size:13px;font-weight:600;color:var(--yellow);min-height:18px}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:no-preference){.screen.on{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="demo" role="note">Projet étudiant ECV Nantes · <b>collaboration fictive</b> · aucune donnée envoyée</div>
+
+  <header class="top" aria-hidden="true">
+    <div class="bar">
+      <div class="brand"><span class="menu">☰</span>DECATHLON</div>
+      <div class="icons">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#292038" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#292038" stroke-width="2"><path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      </div>
+    </div>
+    <div class="search">Rechercher un produit, un sport…</div>
+  </header>
+
+  <main id="main" tabindex="-1" style="flex:1;display:flex;flex-direction:column;outline:none">
+
+  <!-- LANDING -->
+  <section class="screen on" id="s-home" aria-labelledby="t-home">
+    <div class="crumb">Accueil › Enfant › Decathlon × Dora</div>
+    <div class="hero">
+      <img class="leaves" src="assets/feuillage.png" alt="">
+      <div class="scan"><img src="assets/carte.png" alt="">Vous avez scanné votre carte d'aventure « En route, on bouge ! »</div>
+      <div class="pills"><span class="pill">Pour les parents</span><span class="pill alt">Jeu concours</span></div>
+      <h1 id="t-home">L'aventure continue à la maison !</h1>
+      <p>Faites le quiz Dora en famille : 3 questions, 2 minutes. Tentez de gagner une saison de sport et des équipements Decathlon.</p>
+      <img class="illu" src="assets/clairiere.png" alt="La clairière de l'aventure : une cabane dans un arbre, un pont de corde et une tente.">
+      <button class="btn btn-y" data-go="q1">Commencer le quiz</button>
+    </div>
+
+    <div class="pad how">
+      <h2>Comment participer ?</h2>
+      <div class="step"><div class="num">1</div><div><strong>Répondez aux 3 questions</strong><span>En famille, avec votre enfant.</span></div></div>
+      <div class="step"><div class="num">2</div><div><strong>Laissez vos coordonnées</strong><span>Une participation par famille.</span></div></div>
+      <div class="step"><div class="num">3</div><div><strong>Tirage au sort le 18 septembre</strong><span>Les 10 gagnants sont annoncés le jour de la fête de clôture.</span></div></div>
+    </div>
+
+    <div class="prize">
+      <small>À GAGNER</small>
+      <h2>1er prix : une saison de sport</h2>
+      <p>L'inscription en club pour la saison 2027-2028, dans le sport choisi par l'enfant, et le kit Decathlon complet.</p>
+      <div class="more">Du 2e au 5e : le kit Decathlon complet.<br>Du 6e au 10e : une pièce du kit.</div>
+    </div>
+
+    <div class="pad rules">
+      <h2>Les règles en bref</h2>
+      <ul>
+        <li>Jeu gratuit, sans obligation d'achat.</li>
+        <li>Réservé aux adultes : le parent participe pour sa famille.</li>
+        <li>Une seule participation par famille.</li>
+        <li>Du 21 août au 18 septembre 2027.</li>
+      </ul>
+      <details>
+        <summary class="link">Lire le règlement complet</summary>
+        <div class="full">
+          <p><strong>Règlement fictif, rédigé pour un projet étudiant.</strong></p>
+          <p>Jeu ouvert du 21 août au 18 septembre 2027 aux adultes ayant reçu la carte d'aventure « En route, on bouge ! ». Une participation par famille.</p>
+          <p>Tirage au sort le 18 septembre 2027, jour de la fête de clôture. 10 gagnants : 1er prix, une saison en club dans le sport choisi par l'enfant et le kit Decathlon complet (sweat à capuche, t-shirt, short, pantalon de survêtement, gourde, poignet éponge, chaussettes, chaussures) ; du 2e au 5e, le kit complet ; du 6e au 10e, une pièce du kit au hasard.</p>
+          <p>Aucune donnée sur l'enfant n'est demandée. Dans cette démo, rien n'est envoyé ni enregistré.</p>
+        </div>
+      </details>
+      <button class="btn btn-b" style="margin-top:24px" data-go="q1">Commencer le quiz</button>
+    </div>
+    <footer class="foot">Decathlon × Dora · collaboration fictive · projet ECV Nantes</footer>
+  </section>
+
+  <!-- QUESTIONS (générées) -->
+  <section class="screen q" id="s-q" aria-live="polite">
+    <div class="qnav">
+      <div class="row"><button class="back" data-back aria-label="Retour">←</button><span id="q-step">Question 1 sur 3</span></div>
+      <div class="prog" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+    <div class="pad" style="display:flex;flex-direction:column;flex:1;padding-top:0">
+      <h1 id="q-title"></h1>
+      <div class="answers" id="q-answers" role="group" aria-labelledby="q-title"></div>
+      <p class="hint" id="q-hint"></p>
+    </div>
+  </section>
+
+  <!-- RÉPONSE -->
+  <section class="screen reveal" id="s-r">
+    <div class="qnav">
+      <div class="row"><button class="back" data-back aria-label="Retour">←</button><span id="r-step"></span></div>
+      <div class="prog" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+    <div class="body" aria-live="polite">
+      <img class="illu" src="assets/clairiere.png" alt="">
+      <p class="pre">Et la réponse est…</p>
+      <p class="big" id="r-answer"></p>
+      <p class="why" id="r-why"></p>
+      <button class="btn btn-y" id="r-next"></button>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE -->
+  <section class="screen form" id="s-form">
+    <div class="qnav"><div class="row"><button class="back" data-back aria-label="Retour">←</button><span>Dernière étape</span></div></div>
+    <form class="pad" id="f" novalidate style="padding-top:0">
+      <h1>Où vous prévenir si vous gagnez ?</h1>
+      <p class="req">* Champs obligatoires</p>
+      <div class="field"><label for="prenom">Prénom *</label><input id="prenom" name="prenom" autocomplete="given-name" placeholder="Votre prénom" required><p class="err">Indiquez votre prénom.</p></div>
+      <div class="field"><label for="nom">Nom *</label><input id="nom" name="nom" autocomplete="family-name" placeholder="Votre nom" required><p class="err">Indiquez votre nom.</p></div>
+      <div class="field"><label for="mail">E-mail *</label><input id="mail" name="mail" type="email" inputmode="email" autocomplete="email" placeholder="exemple@mail.fr" required><p class="err">Indiquez un e-mail valide, par exemple prenom@mail.fr.</p></div>
+      <label class="check" id="c-age"><input type="checkbox" id="age" required><span>Je certifie avoir 18 ans ou plus. *</span></label>
+      <label class="check" id="c-reg"><input type="checkbox" id="reg" required><span>J'accepte le règlement du jeu. *</span></label>
+      <label class="check"><input type="checkbox" id="news"><span>Je souhaite recevoir les actualités Decathlon.</span></label>
+      <button class="btn btn-b" type="submit">Valider ma participation</button>
+      <p class="small">Une participation par famille. Démo : rien n'est envoyé ni enregistré.</p>
+    </form>
+  </section>
+
+  <!-- CONFIRMATION -->
+  <section class="screen done" id="s-done">
+    <img class="leaves" src="assets/feuillage.png" alt="">
+    <div class="body">
+      <h1 tabindex="-1" id="t-done">C'est noté !</h1>
+      <p>Votre participation est enregistrée. Tirage au sort le 18 septembre, jour de la fête de clôture. Bonne chance à toute la famille !</p>
+      <img class="illu" src="assets/clairiere.png" alt="">
+      <button class="btn btn-y" id="collec">Découvrir la collection Decathlon × Dora</button>
+      <p class="toast" id="toast" aria-live="polite"></p>
+      <a href="#" class="again" id="again">Retour à l'accueil du jeu</a>
+    </div>
+  </section>
+  </main>
+</div>
+
+<script>
+const Q=[
+ {t:"Comment s'appelle le singe ami de Dora ?",a:["Babouche","Chipeur","Tico"],ok:"Babouche !",why:"Le singe ami de Dora, toujours avec ses bottes rouges.",next:"Question suivante",hint:"Touchez une réponse."},
+ {t:"Que porte Dora sur son dos pendant ses aventures ?",a:["Un sac à dos","Babouche, son singe","La Carte"],ok:"Un sac à dos !",why:"Comme le sac Decathlon × Dora, à personnaliser avec ses écussons.",next:"Dernière question",hint:"Touchez une réponse."},
+ {t:"Quel sport a préféré votre enfant ?",a:["Courir et sauter","Lancer et attraper","Grimper et tenir en équilibre","Rouler et glisser"],hint:"Pas de mauvaise réponse : elle aide Decathlon à vous conseiller."}
+];
+const $=s=>document.querySelector(s);
+let state={screen:'home',q:0};
+function setProg(sel,n){document.querySelectorAll(sel+' .prog i').forEach((el,i)=>el.classList.toggle('done',i<n));}
+function render(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  const s=state.screen;
+  if(s==='home'){$('#s-home').classList.add('on');}
+  if(s==='q'){const q=Q[state.q];$('#q-step').textContent='Question '+(state.q+1)+' sur 3';$('#q-title').textContent=q.t;$('#q-hint').textContent=q.hint;
+    const box=$('#q-answers');box.innerHTML='';q.a.forEach(txt=>{const b=document.createElement('button');b.className='ans';b.type='button';b.textContent=txt;b.onclick=()=>{b.classList.add('picked');setTimeout(()=>{if(state.q<2)go({screen:'r',q:state.q});else go({screen:'form',q:2});},180);};box.appendChild(b);});
+    setProg('#s-q',state.q+1);$('#s-q').classList.add('on');}
+  if(s==='r'){const q=Q[state.q];$('#r-step').textContent='Question '+(state.q+1)+' sur 3';$('#r-answer').textContent=q.ok;$('#r-why').textContent=q.why;$('#r-next').textContent=q.next;setProg('#s-r',state.q+1);$('#s-r').classList.add('on');}
+  if(s==='form'){$('#s-form').classList.add('on');}
+  if(s==='done'){$('#s-done').classList.add('on');}
+  window.scrollTo(0,0);
+  const h=document.querySelector('.screen.on h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}
+}
+function go(next){state=Object.assign({},state,next);history.pushState(state,'');render();}
+window.addEventListener('popstate',e=>{state=e.state||{screen:'home',q:0};render();});
+history.replaceState(state,'');
+document.querySelectorAll('[data-go="q1"]').forEach(b=>b.onclick=()=>go({screen:'q',q:0}));
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>history.back());
+$('#r-next').onclick=()=>go({screen:'q',q:state.q+1});
+$('#f').addEventListener('submit',e=>{
+  e.preventDefault();let first=null;
+  const chk=(id,cond)=>{const f=$('#'+id).closest('.field');f.classList.toggle('invalid',!cond);$('#'+id).setAttribute('aria-invalid',!cond);if(!cond&&!first)first=$('#'+id);};
+  chk('prenom',$('#prenom').value.trim()!=='');chk('nom',$('#nom').value.trim()!=='');chk('mail',/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('#mail').value.trim()));
+  [['age','c-age'],['reg','c-reg']].forEach(([i,c])=>{const ok=$('#'+i).checked;$('#'+c).classList.toggle('invalid',!ok);if(!ok&&!first)first=$('#'+i);});
+  if(first){first.focus();return;}
+  $('#f').reset();go({screen:'done'});
+});
+$('#collec').onclick=()=>{$('#toast').textContent='Démo : la collection Decathlon × Dora est fictive.';};
+$('#again').onclick=e=>{e.preventDefault();$('#toast').textContent='';go({screen:'home',q:0});};
+</script>
+</body>
+</html>
